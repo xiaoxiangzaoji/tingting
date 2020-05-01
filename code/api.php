@@ -102,25 +102,28 @@ function getDateList(){
     $excel_id = $_GET['excel_id'];
     JXMySQL_Execute('select * from `excel` where id =?',[$excel_id]);
     $result = JXMySQL_Result();
-    $excel_name = $result[0]['excel_name'];
     $start_time = $result[0]['start_time'];
-    $end_time = $result[0]['end_time'];
 
     JXMySQL_Execute('select * from `task` where excel_id =? order by sort',[$excel_id]);
     $tasks = JXMySQL_Result();
     JXMySQL_Execute('select * from `position` where excel_id =? order by sort',[$excel_id]);
     $positions = JXMySQL_Result();
     $x = $y = [];
+//    foreach ($tasks as $task){
+//        $x[] = $task['task_name'];
+//    }
     foreach ($tasks as $task){
-        $x[] = $task['task_name'];
+        $x[] = ['task_name'=>$task['task_name'],'sort'=>$task['sort']];
     }
 
     foreach ($positions as $position){
         $y[] = $position['position_name'];
     }
-    $datas= calculationDate($start_time,$x,$y);
-
-    //    var_dump($datas);die();
+//    var_dump($x);
+//    var_dump($y);die();
+    //$datas= calculationDate($start_time,$x,$y);
+    $datas= calculationNewDate($start_time,$x,$y);
+       //var_dump($datas);die();
 
     $firstchange = [];
     foreach ($datas as $data){
@@ -167,6 +170,48 @@ function calculationDate($start_time,$x,$y){
     return $final;
 }
 
+function calculationNewDate($start_time,$x,$y){
+        $new =[];
+        $final=[];
+        foreach ($x as $k =>$v){
+
+            foreach ($y as $a =>$b){
+                if($k == 0 && $a == 0){
+                    $new[$k][$a] = ['date'=>$start_time,'position'=>$b,'task'=>$v['task_name'],'task_sort'=>$v['sort'],'position_sort'=>$a];
+                    $final[]= ['date'=>$start_time,'position'=>$b,'task'=>$v['task_name'],'task_sort'=>$v['sort'],'position_sort'=>$a];
+                }else{
+                    $lastk = $k -1;
+                    if(isset($x[$lastk]) && $x[$k]['sort'] == $x[$lastk]['sort']){
+                        if($k != 0 && $a == 0){
+                            $start_time = $new[$k-1][getrRandom()]['date'];
+                            $new[$k][$a] = ['date'=>$start_time,'position'=>$b,'task'=>$v['task_name'],'task_sort'=>$v['sort'],'position_sort'=>$a];
+                            $final[]= ['date'=>$start_time,'position'=>$b,'task'=>$v['task_name'],'task_sort'=>$v['sort'],'position_sort'=>$a];
+                        }else{
+                            $start_time =date("Y-m-d", strtotime("+1 day", strtotime($start_time)));
+                            $new[$k][$a] = ['date'=>$start_time,'position'=>$b,'task'=>$v['task_name'],'task_sort'=>$v['sort'],'position_sort'=>$a];
+                            $final[]= ['date'=>$start_time,'position'=>$b,'task'=>$v['task_name'],'task_sort'=>$v['sort'],'position_sort'=>$a];
+                        }
+                    }else{
+                        if($k != 0 && $a == 0){
+                            if(isset($lastk)){
+                                $start_time = $new[$lastk][getNewStart($y)]['date'];
+                                $new[$k][$a] = ['date'=>$start_time,'position'=>$b,'task'=>$v['task_name'],'task_sort'=>$v['sort'],'position_sort'=>$a];
+                                $final[]= ['date'=>$start_time,'position'=>$b,'task'=>$v['task_name'],'task_sort'=>$v['sort'],'position_sort'=>$a];
+                            }
+                        }else{
+                            $start_time =date("Y-m-d", strtotime("+1 day", strtotime($start_time)));
+                            $new[$k][$a] = ['date'=>$start_time,'position'=>$b,'task'=>$v['task_name'],'task_sort'=>$v['sort'],'position_sort'=>$a];
+                            $final[]= ['date'=>$start_time,'position'=>$b,'task'=>$v['task_name'],'task_sort'=>$v['sort'],'position_sort'=>$a];
+                        }
+                    }
+
+                }
+            }
+
+        }
+
+        return $final;
+}
 function getNewStart($y){
     $middle = count($y)/2;
     if(ceil($middle)==$middle){
@@ -174,6 +219,12 @@ function getNewStart($y){
     }else{
         $range = [floor($middle)-1,ceil($middle)-1];
     }
+    $newStart = $range[array_rand($range)];
+    return $newStart;
+}
+
+function getrRandom(){
+    $range = [0,1];
     $newStart = $range[array_rand($range)];
     return $newStart;
 }
