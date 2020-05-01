@@ -50,6 +50,7 @@ $excel = $allData['excel'];
 
         table.render({
             elem: '#test',
+            limit:1000,
             toolbar: 'exports', //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
             data: data,
             cols:[tableHeaders]
