@@ -184,10 +184,11 @@ function calculationNewDate($start_time,$x,$y){
                     if(isset($x[$lastk]) && $x[$k]['sort'] == $x[$lastk]['sort']){
                         if($k != 0 && $a == 0){
                             $start_time = $new[$k-1][getrRandom()]['date'];
+                            $start_time = date("Y-m-d", strtotime("+2 day", strtotime($start_time)));
                             $new[$k][$a] = ['date'=>$start_time,'position'=>$b,'task'=>$v['task_name'],'task_sort'=>$v['sort'],'position_sort'=>$a];
                             $final[]= ['date'=>$start_time,'position'=>$b,'task'=>$v['task_name'],'task_sort'=>$v['sort'],'position_sort'=>$a];
                         }else{
-                            $start_time =date("Y-m-d", strtotime("+1 day", strtotime($start_time)));
+                            $start_time =date("Y-m-d", strtotime("+3 day", strtotime($start_time)));
                             $new[$k][$a] = ['date'=>$start_time,'position'=>$b,'task'=>$v['task_name'],'task_sort'=>$v['sort'],'position_sort'=>$a];
                             $final[]= ['date'=>$start_time,'position'=>$b,'task'=>$v['task_name'],'task_sort'=>$v['sort'],'position_sort'=>$a];
                         }
@@ -195,11 +196,12 @@ function calculationNewDate($start_time,$x,$y){
                         if($k != 0 && $a == 0){
                             if(isset($lastk)){
                                 $start_time = $new[$lastk][getNewStart($y)]['date'];
+                                $start_time = date("Y-m-d", strtotime("+2 day", strtotime($start_time)));
                                 $new[$k][$a] = ['date'=>$start_time,'position'=>$b,'task'=>$v['task_name'],'task_sort'=>$v['sort'],'position_sort'=>$a];
                                 $final[]= ['date'=>$start_time,'position'=>$b,'task'=>$v['task_name'],'task_sort'=>$v['sort'],'position_sort'=>$a];
                             }
                         }else{
-                            $start_time =date("Y-m-d", strtotime("+1 day", strtotime($start_time)));
+                            $start_time =date("Y-m-d", strtotime("+3 day", strtotime($start_time)));
                             $new[$k][$a] = ['date'=>$start_time,'position'=>$b,'task'=>$v['task_name'],'task_sort'=>$v['sort'],'position_sort'=>$a];
                             $final[]= ['date'=>$start_time,'position'=>$b,'task'=>$v['task_name'],'task_sort'=>$v['sort'],'position_sort'=>$a];
                         }
