@@ -18,8 +18,6 @@
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="task">查看任务</a>
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="position">查看位置</a>
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="result">查看结果</a>
-<!--    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>-->
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
 
@@ -31,8 +29,11 @@
         var table = layui.table;
 
         let cols = [
+            {type: 'checkbox', fixed: 'left'},
             {field:'id', title:'ID',  fixed: 'left', unresize: true, sort: true,width:100}
-            ,{field:'excel_name', title:'excel名称',width:500}
+            ,{field:'excel_name', title:'excel名称',width:300}
+            ,{field:'date_count', title:'间隔天数',width:100}
+            ,{field:'start_postion', title:'起始比率',width:100}
             ,{field:'start_time', title:'开始时间',sort: true,width:200}
             ,{field:'end_time', title:'结束时间', sort: true,width:200}
             ,{fixed: 'right', title:'操作', toolbar: '#barDemo'}
@@ -71,14 +72,14 @@
                 layer.open({
                     type: 2,
                     content: 'task.html?excel_id='+data.id,
-                    area: ['600px', '400px'],
+                    area: ['800px', '500px'],
                     maxmin: true
                 });
             }else if(obj.event === 'position'){
                 layer.open({
                     type: 2,
                     content: 'position.html?excel_id='+data.id,
-                    area: ['600px', '400px'],
+                    area: ['800px', '500px'],
                     maxmin: true
                 });
             }else if(obj.event === 'result'){
@@ -105,13 +106,18 @@
                     });
                     break;
                 case 'update':
-                    // if(data.length === 0){
-                    //     layer.msg('请选择一行');
-                    // } else if(data.length > 1){
-                    //     layer.msg('只能同时编辑一个');
-                    // } else {
-                    //     layer.alert('编辑 [id]：'+ checkStatus.data[0].id);
-                    // }
+                    if(data.length === 0){
+                        layer.msg('请选择一行');
+                    } else if(data.length > 1){
+                        layer.msg('只能同时编辑一个');
+                    } else {
+                        layer.open({
+                            type: 2,
+                            content: 'edit_excel.php?action=5&excel_id='+checkStatus.data[0].id,
+                            area: ['600px', '400px'],
+                            maxmin: true
+                        });
+                    }
                     break;
                 case 'delete':
                     if(data.length === 0){

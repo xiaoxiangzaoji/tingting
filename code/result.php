@@ -2,7 +2,10 @@
 require('api.php');
 $allData = getDateList();
 $data = $allData['dateData'];
+//var_dump($data);die();
 $excel = $allData['excel'];
+$timelist = $allData['timeList'];
+//var_dump($timelist);die();
 ?>
 
 
@@ -19,14 +22,29 @@ $excel = $allData['excel'];
 </head>
 <body>
 
-<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-    <legend><span>时间排班表</span></legend>
-    <legend><?php echo $excel[0]['excel_name'] ?><span>&nbsp;&nbsp;&nbsp;&nbsp;<label>开始时间</label><?php echo $excel[0]['start_time'] ?></span><span><label>截止时间</label><?php echo $excel[0]['end_time'] ?></span></legend>
-</fieldset>
 
-<div class="layui-form">
-    <table class="layui-hide" id="test" lay-filter="test"></table>
+
+<div class="layui-tab">
+    <ul class="layui-tab-title">
+        <li class="layui-this">排班时间表</li>
+        <li>时间记录表</li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+            <div class="layui-form">
+                <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+                    <legend><?php echo $excel[0]['excel_name'] ?><span>&nbsp;&nbsp;&nbsp;&nbsp;<label>开始时间</label><?php echo $excel[0]['start_time'] ?></span><span><label>截止时间</label><?php echo $excel[0]['end_time'] ?></span></legend>
+                </fieldset>
+                <table class="layui-hide" id="test" lay-filter="test"></table>
+            </div>
+        </div>
+        <div class="layui-tab-item">
+            <table class="layui-hide" id="test1" lay-filter="test1"></table>
+        </div>
+    </div>
 </div>
+
+
 
 
 <script src="./layui/layui.js"></script>
@@ -45,9 +63,13 @@ $excel = $allData['excel'];
             tableHeaders.push(temp_col)
         }
     }
+
+    var timedata = '<?php echo json_encode($timelist, JSON_UNESCAPED_UNICODE)?>';
+    timedata = JSON.parse(timedata);
+
+
     layui.use('table', function () {
         var table = layui.table;
-
         table.render({
             elem: '#test',
             limit:1000,
@@ -55,6 +77,24 @@ $excel = $allData['excel'];
             data: data,
             cols:[tableHeaders]
         });
+    });
+
+    layui.use('table', function () {
+        var table = layui.table;
+        table.render({
+            elem: '#test1',
+            limit:1000,
+            toolbar: 'exports', //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+            data: timedata,
+            cols:[[ //标题栏
+            {field: 'date', title: '日期', width: 500, sort: true}
+            ,{field: 'str', title: '工作', width: 1000}
+        ]]
+        });
+    });
+
+    layui.use('element', function(){
+        var element = layui.element;
     });
 </script>
 

@@ -1,3 +1,13 @@
+<?php
+require('api.php');
+$allData = showExcel();
+//var_dump($allData);die();
+//$data = $allData['dateData'];
+//$excel = $allData['excel'];
+
+?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,29 +23,30 @@
 
 
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
-    <legend>添加excel</legend>
+    <legend>修改excel</legend>
 </fieldset>
 
 <form class="layui-form" action="api.php" lay-filter="example" method="post">
     <input type="hidden" name="action" value="1">
+    <input type="hidden" name="excel_id" value="<?php echo $allData[0]['id'] ?>">
     <div class="layui-form-item">
         <label class="layui-form-label">excel名称</label>
         <div class="layui-input-block">
-            <input type="text" name="excel_name" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+            <input type="text" name="excel_name" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input" value="<?php echo $allData[0]['excel_name'] ?>">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">间隔天数</label>
         <div class="layui-input-block">
-            <input type="text" name="date_count" lay-verify="title" autocomplete="off" placeholder="间隔天数" class="layui-input" value="2">
+            <input type="text" name="date_count" lay-verify="title" autocomplete="off" placeholder="间隔天数" class="layui-input" value="<?php echo $allData[0]['date_count'] ?>">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">起始比率</label>
         <div class="layui-input-block">
-            <input type="text" name="start_postion" lay-verify="title" autocomplete="off" placeholder="起始比率" class="layui-input" value="2">
+            <input type="text" name="start_postion" lay-verify="title" autocomplete="off" placeholder="起始比率" class="layui-input" value="<?php echo $allData[0]['start_postion'] ?>">
         </div>
     </div>
 
@@ -43,7 +54,7 @@
         <label class="layui-form-label">开始时间</label>
         <div class="layui-input-block">
             <div class="layui-inline"> <!-- 注意：这一层元素并不是必须的 -->
-                <input type="text" class="layui-input" id="start_time" name="start_time" autocomplete="off">
+                <input type="text" class="layui-input" id="start_time" name="start_time" autocomplete="off" value="<?php echo $allData[0]['start_time'] ?>">
             </div>
         </div>
     </div>
@@ -52,7 +63,7 @@
         <label class="layui-form-label">结束时间</label>
         <div class="layui-input-block">
             <div class="layui-inline"> <!-- 注意：这一层元素并不是必须的 -->
-                <input type="text" class="layui-input" id="end_time" name="end_time" autocomplete="off">
+                <input type="text" class="layui-input" id="end_time" name="end_time" autocomplete="off" value="<?php echo $allData[0]['end_time'] ?>">
             </div>
         </div>
     </div>
@@ -68,6 +79,8 @@
 <script src="layui/layui.js" charset="utf-8"></script>
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script>
+
+
     layui.use(['form', 'layedit', 'laydate'], function(){
         var form = layui.form
             ,layer = layui.layer
