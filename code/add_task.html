@@ -11,7 +11,6 @@
 </head>
 <body>
 
-
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
     <legend>添加任务</legend>
 </fieldset>
@@ -42,15 +41,16 @@
 
 
 <script src="layui/layui.js" charset="utf-8"></script>
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="layui/jquery.min.js"></script>
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script>
     var loc=location.href;
     var n1=loc.length;//地址的总长度
     var n2=loc.indexOf("=");//取得=号的位置
     var excel_id=decodeURI(loc.substr(n2+1, n1-n2));//从=号后面的内容
+    // console.log(excel_id);
     $("#excel_id").val(excel_id);
-
+    // document.getElementById('excel_id').value = excel_id;
     layui.use(['form', 'layedit', 'laydate'], function(){
         var form = layui.form
             ,layer = layui.layer
@@ -60,6 +60,19 @@
 
 
     });
+
+    function getParam(url, name) {
+        try {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = url.split('?')[1].match(reg);
+            if(r != null) {
+                return r[2];
+            }
+            return "";//如果此处只写return;则返回的是undefined
+        } catch(e) {
+            return "";//如果此处只写return;则返回的是undefined
+        }
+    };
 </script>
 
 </body>

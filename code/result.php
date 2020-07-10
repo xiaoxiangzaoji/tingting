@@ -48,7 +48,7 @@ $timelist = $allData['timeList'];
 
 
 <script src="./layui/layui.js"></script>
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="layui/jquery.min.js"></script>
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script>
     var data = '<?php echo json_encode($data, JSON_UNESCAPED_UNICODE)?>';
